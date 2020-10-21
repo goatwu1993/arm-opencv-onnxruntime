@@ -10,9 +10,9 @@ RUN apt-get update && \
     libprotobuf-dev \
     protobuf-compiler \
     unzip \
-    cython \
-    protobuf \
     && rm -rf /var/lib/apt/lists/*
+
+RUN pip install cython protobuf numpy
 
 #RUN mkdir /code
 WORKDIR /code
