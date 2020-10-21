@@ -1,0 +1,13 @@
+language: python
+
+jobs:
+  include:
+    - services: docker
+      arch: arm64
+
+install:
+  - python3 -m pip install cibuildwheel==1.6.3
+
+script:
+  - docker build -f Dockerfile.arm64v8.python38 .
+
