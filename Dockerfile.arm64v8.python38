@@ -5,21 +5,42 @@ ARG ONNXRUNTIME_SERVER_BRANCH=master
 
 ARG ONNX_VERSION=""
 
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-    git \
-    libprotobuf-dev \
-    protobuf-compiler \
-    unzip \
+RUN apt-get install -y \
     build-essential \
-    && rm -rf /var/lib/apt/lists/*
+    curl \
+    libcurl4-openssl-dev \
+    libssl-dev \
+    wget \
+    python3 \
+    python3-pip \
+    python3-dev \
+    git \
+    tar
 
-RUN pip install cython protobuf numpy cmake
-
+RUN pip3 install --upgrade pip
+RUN pip3 install --upgrade setuptools
+RUN pip3 install --upgrade wheel
+RUN pip3 install numpy
 #RUN mkdir /code
 WORKDIR /code
-RUN pip install onnx
+RUN wget https://cmake.org/files/v3.13/cmake-3.16.1.tar.gz \
+    && tar zxf cmake-3.16.1.tar.gz
+WORKDIR /code/cmake-3.16.1
+RUN ./configure --system-curl \
+    && make
+RUN make install
+
+WORKDIR /code
+RUN git clone --recursive https://github.com/Microsoft/onnxruntime
 
 COPY requirements/base.txt ./requirements/base.txt
 RUN pip install --upgrade pip \
     && pip install -r requirements/base.txt \
+
+WORKDIR /code/onnxruntime
+RUN ./build.sh --config MinSizeRel --update --build
+RUN ./build.sh --config MinSizeRel --build_shared_lib
+RUN ./build.sh --config MinSizeRel --enable_pybind --build_wheel
+
+RUN ls -l /code/onnxruntime/build/Linux/MinSizeRel/*.so
+RUN ls -l /code/onnxruntime/build/Linux/MinSizeRel/dist/*.whl
