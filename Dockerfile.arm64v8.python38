@@ -3,7 +3,8 @@ FROM arm64v8/python:3.8
 ARG ONNXRUNTIME_REPO=https://github.com/Microsoft/onnxruntime
 ARG ONNXRUNTIME_SERVER_BRANCH=master
 
-ARG ONNX_VERSION= 
+ARG ONNX_VERSION=""
+
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     git \
@@ -13,7 +14,7 @@ RUN apt-get update && \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-RUN pip install cython protobuf numpy
+RUN pip install cython protobuf numpy cmake
 
 #RUN mkdir /code
 WORKDIR /code
