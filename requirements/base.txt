@@ -29,3 +29,4 @@ filterpy
 scikit-image
 uvicorn
 certifi # certifi should always be latest
+onnxruntime
