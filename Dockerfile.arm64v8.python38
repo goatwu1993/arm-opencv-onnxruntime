@@ -1,0 +1,26 @@
+FROM arm64v8/python:3.8
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    git \
+    libprotobuf-dev \
+    protobuf-compiler \
+    unzip \
+    && rm -rf /var/lib/apt/lists/*
+
+
+# Onnx builder
+# --------------------------------------------------------
+FROM base as builder
+RUN pip install cython protobuf
+
+#RUN mkdir /code
+WORKDIR /code
+RUN git clone --single-branch https://github.com/onnx/onnx.git
+WORKDIR /code/onnx
+RUN git submodule update --init --recursive
+RUN python3 setup.py install
+
+COPY requirements/base.txt ./requirements/base.txt
+RUN pip install --upgrade pip \
+    && pip install -r requirements/base.txt \
