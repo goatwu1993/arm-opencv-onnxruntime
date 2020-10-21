@@ -18,15 +18,8 @@ RUN apt-get update \
 RUN pip3 install --upgrade pip
 RUN pip3 install --upgrade setuptools
 RUN pip3 install --upgrade wheel
-RUN pip3 install numpy
+RUN pip3 install numpy cmake
 #RUN mkdir /code
-WORKDIR /code
-RUN wget https://cmake.org/files/v3.13/cmake-3.16.1.tar.gz \
-    && tar zxf cmake-3.16.1.tar.gz
-WORKDIR /code/cmake-3.16.1
-RUN ./configure --system-curl \
-    && make
-RUN make install
 
 WORKDIR /code
 RUN git clone --recursive https://github.com/Microsoft/onnxruntime
