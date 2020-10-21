@@ -1,18 +1,18 @@
 FROM arm64v8/python:3.8
 
+ARG ONNXRUNTIME_REPO=https://github.com/Microsoft/onnxruntime
+ARG ONNXRUNTIME_SERVER_BRANCH=master
+
+ARG ONNX_VERSION= 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     git \
     libprotobuf-dev \
     protobuf-compiler \
     unzip \
+    cython \
+    protobuf \
     && rm -rf /var/lib/apt/lists/*
-
-
-# Onnx builder
-# --------------------------------------------------------
-FROM base as builder
-RUN pip install cython protobuf
 
 #RUN mkdir /code
 WORKDIR /code
