@@ -9,5 +9,5 @@ install:
   - python3 -m pip install cibuildwheel==1.6.3
 
 script:
-  - docker build -f Dockerfile.arm64v8.python38 .
+  - docker run --rm --privileged multiarch/qemu-user-static:register --reset && docker build -f Dockerfile.arm64v8.python38 .
 
