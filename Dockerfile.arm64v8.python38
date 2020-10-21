@@ -28,7 +28,7 @@ WORKDIR /code
 RUN git clone --recursive https://github.com/Microsoft/onnxruntime
 
 WORKDIR /code/onnxruntime
-RUN ./build.sh --use_openmp ${BUILDARGS} --update --build --build_shared_lib --build_wheel
+RUN ./build.sh --use_openmp --config MinSizeRel --arm64 --update --build --build_shared_lib --build_wheel
 
 COPY requirements/base.txt ./requirements/base.txt
 RUN pip install --upgrade pip \
