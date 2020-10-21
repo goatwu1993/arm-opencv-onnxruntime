@@ -2,6 +2,7 @@ FROM arm64v8/python:3.8
 
 ARG ONNXRUNTIME_REPO=https://github.com/Microsoft/onnxruntime
 ARG ONNXRUNTIME_SERVER_BRANCH=master
+RUN [ "cross-build-start" ]
 
 
 RUN install_packages \
@@ -51,3 +52,4 @@ RUN ./build.sh --use_openmp ${BUILDARGS} --update --build --build_shared_lib --b
 # Build Output
 RUN ls -l /code/onnxruntime/build/Linux/${BUILDTYPE}/*.so
 RUN ls -l /code/onnxruntime/build/Linux/${BUILDTYPE}/dist/*.whl
+RUN [ "cross-build-end" ]
